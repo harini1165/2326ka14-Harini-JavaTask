@@ -1,0 +1,15 @@
+mysql> CREATE TABLE Student (
+    ->     student_id INT AUTO_INCREMENT PRIMARY KEY,
+    ->     name VARCHAR(100) NOT NULL,
+    ->     age INT,
+    ->     email VARCHAR(100) UNIQUE NOT NULL
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql>
+mysql> CREATE TABLE Course (
+    ->     course_id INT AUTO_INCREMENT PRIMARY KEY,
+    ->     course_name VARCHAR(100) NOT NULL,
+    ->     description VARCHAR(255)
+    -> );
+Query OK, 0 rows affected

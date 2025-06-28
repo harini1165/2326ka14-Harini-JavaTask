@@ -1,0 +1,69 @@
+mysql> CREATE TABLE Customers (
+    ->     CustomerID INT AUTO_INCREMENT PRIMARY KEY,
+    ->     Name VARCHAR(100),
+    ->     Email VARCHAR(100),
+    ->     City VARCHAR(50),
+    ->     Age INT,
+    ->     TotalSpent DECIMAL(10, 2),
+    ->     JoinDate DATE
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO Customers (Name, Email, City, Age, TotalSpent, JoinDate) VALUES
+    -> ('Alice Smith', 'alice@example.com', 'New York', 28, 1200.50, '2023-02-15'),
+    -> ('Bob Johnson', 'bob@example.com', 'Chicago', 35, 850.00, '2022-11-10'),
+    -> ('Carol White', 'carol@example.com', 'Los Angeles', 42, 2300.00, '2021-08-22'),
+    -> ('David Lee', 'david@example.com', 'Chicago', 30, 950.75, '2024-01-05'),
+    -> ('Emily Davis', 'emily@example.com', 'New York', 25, 1100.20, '2023-06-30');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Customers
+    -> WHERE City = 'Chicago';
++------------+-------------+-------------------+---------+------+------------+------------+
+| CustomerID | Name        | Email             | City    | Age  | TotalSpent | JoinDate   |
++------------+-------------+-------------------+---------+------+------------+------------+
+|          2 | Bob Johnson | bob@example.com   | Chicago |   35 |     850.00 | 2022-11-10 |
+|          4 | David Lee   | david@example.com | Chicago |   30 |     950.75 | 2024-01-05 |
++------------+-------------+-------------------+---------+------+------------+------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Customers
+    -> WHERE Age > 30;
++------------+-------------+-------------------+-------------+------+------------+------------+
+| CustomerID | Name        | Email             | City        | Age  | TotalSpent | JoinDate   |
++------------+-------------+-------------------+-------------+------+------------+------------+
+|          2 | Bob Johnson | bob@example.com   | Chicago     |   35 |     850.00 | 2022-11-10 |
+|          3 | Carol White | carol@example.com | Los Angeles |   42 |    2300.00 | 2021-08-22 |
++------------+-------------+-------------------+-------------+------+------------+------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Customers
+    -> WHERE TotalSpent > 1000;
++------------+-------------+-------------------+-------------+------+------------+------------+
+| CustomerID | Name        | Email             | City        | Age  | TotalSpent | JoinDate   |
++------------+-------------+-------------------+-------------+------+------------+------------+
+|          1 | Alice Smith | alice@example.com | New York    |   28 |    1200.50 | 2023-02-15 |
+|          3 | Carol White | carol@example.com | Los Angeles |   42 |    2300.00 | 2021-08-22 |
+|          5 | Emily Davis | emily@example.com | New York    |   25 |    1100.20 | 2023-06-30 |
++------------+-------------+-------------------+-------------+------+------------+------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Customers
+    -> WHERE YEAR(JoinDate) = 2023;
++------------+-------------+-------------------+----------+------+------------+------------+
+| CustomerID | Name        | Email             | City     | Age  | TotalSpent | JoinDate   |
++------------+-------------+-------------------+----------+------+------------+------------+
+|          1 | Alice Smith | alice@example.com | New York |   28 |    1200.50 | 2023-02-15 |
+|          5 | Emily Davis | emily@example.com | New York |   25 |    1100.20 | 2023-06-30 |
++------------+-------------+-------------------+----------+------+------------+------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Customers
+    -> WHERE Name LIKE '%Smith%';
++------------+-------------+-------------------+----------+------+------------+------------+
+| CustomerID | Name        | Email             | City     | Age  | TotalSpent | JoinDate   |
++------------+-------------+-------------------+----------+------+------------+------------+
+|          1 | Alice Smith | alice@example.com | New York |   28 |    1200.50 | 2023-02-15 |
++------------+-------------+-------------------+----------+------+------------+------------+
+1 row in set (0.00 sec)

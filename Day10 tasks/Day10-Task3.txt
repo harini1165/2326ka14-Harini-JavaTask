@@ -1,0 +1,24 @@
+mysql> CREATE TABLE Books (
+    ->     BookID INT AUTO_INCREMENT PRIMARY KEY,
+    ->     Title VARCHAR(255),
+    ->     Author VARCHAR(100),
+    ->     Genre VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO Books (Title, Author, Genre) VALUES
+    -> ('Harry Potter and the Sorcerer\'s Stone', 'J.K. Rowling', 'Fantasy'),
+    -> ('The Art of Computer Programming', 'Donald Knuth', 'Computer Science'),
+    -> ('The Great Gatsby', 'F. Scott Fitzgerald', 'Classic'),
+    -> ('A Brief History of Time', 'Stephen Hawking', 'Science'),
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Books
+    -> WHERE Title LIKE '%Computer%';
++--------+---------------------------------+--------------+------------------+
+| BookID | Title                           | Author       | Genre            |
++--------+---------------------------------+--------------+------------------+
+|      2 | The Art of Computer Programming | Donald Knuth | Computer Science |
++--------+---------------------------------+--------------+------------------+
+1 row in set

@@ -1,0 +1,50 @@
+mysql> CREATE TABLE Department (
+    ->     DeptID INT PRIMARY KEY,
+    ->     DeptName VARCHAR(100)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> CREATE TABLE Employee (
+    ->     EmpID INT PRIMARY KEY,
+    ->     EmpName VARCHAR(100),
+    ->     Salary DECIMAL(10, 2),
+    ->     HireDate DATE,
+    ->     DeptID INT,
+    ->     FOREIGN KEY (DeptID) REFERENCES Department(DeptID)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO Department (DeptID, DeptName) VALUES
+    -> (1, 'HR'),
+    -> (2, 'Engineering'),
+    -> (3, 'Sales');
+Query OK, 3 rows affected (0.04 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Employee (EmpID, EmpName, Salary, HireDate, DeptID) VALUES
+    -> (101, 'Alice', 60000, '2022-01-10', 1),
+    -> (102, 'Bob', 80000, '2021-06-15', 2),
+    -> (103, 'Carol', 75000, '2023-03-22', 2),
+    -> (104, 'David', 50000, '2020-08-01', 3),
+    -> (105, 'Eve', 62000, '2023-09-10', 1);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT
+    ->     d.DeptName,
+    ->     COUNT(e.EmpID) AS TotalEmployees,
+    ->     AVG(e.Salary) AS AvgSalary,
+    ->     MAX(e.Salary) AS MaxSalary,
+    ->     MIN(e.Salary) AS MinSalary
+    -> FROM Department d
+    -> LEFT JOIN Employee e ON d.DeptID = e.DeptID
+    -> GROUP BY d.DeptID, d.DeptName
+    -> ORDER BY AvgSalary DESC;
++-------------+----------------+--------------+-----------+-----------+
+| DeptName    | TotalEmployees | AvgSalary    | MaxSalary | MinSalary |
++-------------+----------------+--------------+-----------+-----------+
+| Engineering |              2 | 77500.000000 |  80000.00 |  75000.00 |
+| HR          |              2 | 61000.000000 |  62000.00 |  60000.00 |
+| Sales       |              1 | 50000.000000 |  50000.00 |  50000.00 |
++-------------+----------------+--------------+-----------+-----------+
+3 rows in set (0.00 sec)

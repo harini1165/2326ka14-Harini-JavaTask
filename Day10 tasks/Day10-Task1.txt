@@ -1,0 +1,10 @@
+mysql> SELECT * FROM Students
+    -> WHERE Marks > 80;
++-----------+-------------+-------+
+| StudentID | Name   | Marks |
++-----------+-------------+-------+
+|         1 | Alice  |    85 |
+|         3 | Carol  |    92 |
+|         5 | Emily  |    88 |
++-----------+-------------+-------+
+3 rows in set

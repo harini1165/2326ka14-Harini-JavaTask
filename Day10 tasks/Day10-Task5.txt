@@ -1,0 +1,63 @@
+mysql> SELECT * FROM Employee
+    -> WHERE EmpName LIKE '%john%';
++-------+--------------+--------------------------+----------+--------+------------+
+| EmpID | EmpName      | Email                    | Salary   | DeptID | HireDate   |
++-------+--------------+--------------------------+----------+--------+------------+
+|     1 | John Doe     | john.doe@example.com     | 60000.00 |      1 | 2023-03-15 |
+|     3 | Mike Johnson | mike.johnson@example.com | 75000.00 |      2 | 2024-05-20 |
++-------+--------------+--------------------------+----------+--------+------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Employee
+    -> WHERE DeptID = 3;
++-------+-------------+-------------------------+----------+--------+------------+
+| EmpID | EmpName     | Email                   | Salary   | DeptID | HireDate   |
++-------+-------------+-------------------------+----------+--------+------------+
+|     4 | Emily Davis | emily.davis@example.com | 50000.00 |      3 | 2021-07-10 |
++-------+-------------+-------------------------+----------+--------+------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM Employee
+    -> WHERE Salary > 60000;
++-------+--------------+--------------------------+----------+--------+------------+
+| EmpID | EmpName      | Email                    | Salary   | DeptID | HireDate   |
++-------+--------------+--------------------------+----------+--------+------------+
+|     2 | Jane Smith   | jane.smith@example.com   | 85000.00 |      2 | 2022-11-01 |
+|     3 | Mike Johnson | mike.johnson@example.com | 75000.00 |      2 | 2024-05-20 |
++-------+--------------+--------------------------+----------+--------+------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Employee
+    -> ORDER BY Salary ASC;
++-------+--------------+--------------------------+----------+--------+------------+
+| EmpID | EmpName      | Email                    | Salary   | DeptID | HireDate   |
++-------+--------------+--------------------------+----------+--------+------------+
+|     4 | Emily Davis  | emily.davis@example.com  | 50000.00 |      3 | 2021-07-10 |
+|     1 | John Doe     | john.doe@example.com     | 60000.00 |      1 | 2023-03-15 |
+|     3 | Mike Johnson | mike.johnson@example.com | 75000.00 |      2 | 2024-05-20 |
+|     2 | Jane Smith   | jane.smith@example.com   | 85000.00 |      2 | 2022-11-01 |
++-------+--------------+--------------------------+----------+--------+------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Employee
+    -> ORDER BY HireDate DESC;
++-------+--------------+--------------------------+----------+--------+------------+
+| EmpID | EmpName      | Email                    | Salary   | DeptID | HireDate   |
++-------+--------------+--------------------------+----------+--------+------------+
+|     3 | Mike Johnson | mike.johnson@example.com | 75000.00 |      2 | 2024-05-20 |
+|     1 | John Doe     | john.doe@example.com     | 60000.00 |      1 | 2023-03-15 |
+|     2 | Jane Smith   | jane.smith@example.com   | 85000.00 |      2 | 2022-11-01 |
+|     4 | Emily Davis  | emily.davis@example.com  | 50000.00 |      3 | 2021-07-10 |
++-------+--------------+--------------------------+----------+--------+------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Employee
+    -> WHERE DeptID = 2 AND Salary > 50000
+    -> ORDER BY EmpName ASC;
++-------+--------------+--------------------------+----------+--------+------------+
+| EmpID | EmpName      | Email                    | Salary   | DeptID | HireDate   |
++-------+--------------+--------------------------+----------+--------+------------+
+|     2 | Jane Smith   | jane.smith@example.com   | 85000.00 |      2 | 2022-11-01 |
+|     3 | Mike Johnson | mike.johnson@example.com | 75000.00 |      2 | 2024-05-20 |
++-------+--------------+--------------------------+----------+--------+------------+
+2 rows in set (0.00 sec)

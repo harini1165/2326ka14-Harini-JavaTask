@@ -1,0 +1,19 @@
+mysql> ALTER TABLE Course ADD COLUMN fee DECIMAL(10, 2);
+Query OK, 0 rows affected 
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> UPDATE Course
+    -> SET fee = 1500.00
+    -> WHERE course_name = 'Computer Science';
+Query OK, 1 row affected 
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql>
+mysql> SELECT * FROM Course WHERE course_name = 'Computer Science';
++-----------+------------------+------------------------------------------+---------+
+| course_id | course_name      | description                              | fee     |
++-----------+------------------+------------------------------------------+---------+
+|         3 | Computer Science | Intro to programming and data structures | 1500.00 |
++-----------+------------------+------------------------------------------+---------+
+1 row in set 

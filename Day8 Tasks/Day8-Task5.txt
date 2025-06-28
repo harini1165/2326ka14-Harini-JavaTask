@@ -1,0 +1,38 @@
+mysql> -- Create Department table
+mysql> CREATE TABLE Department (
+    ->     DeptID INT AUTO_INCREMENT PRIMARY KEY,
+    ->     DeptName VARCHAR(100),
+    ->     Location VARCHAR(100)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql>
+mysql> -- Create Employee table
+mysql> CREATE TABLE Employee (
+    ->     EmpID INT AUTO_INCREMENT PRIMARY KEY,
+    ->     EmpName VARCHAR(100),
+    ->     Email VARCHAR(100),
+    ->     Salary DECIMAL(10, 2),
+    ->     DeptID INT,
+    ->     HireDate DATE,
+    ->     FOREIGN KEY (DeptID) REFERENCES Department(DeptID)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> -- Insert into Department
+mysql> INSERT INTO Department (DeptName, Location) VALUES
+    -> ('Human Resources', 'New York'),
+    -> ('Engineering', 'San Francisco'),
+    -> ('Marketing', 'Chicago');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> -- Insert into Employee
+mysql> INSERT INTO Employee (EmpName, Email, Salary, DeptID, HireDate) VALUES
+    -> ('John Doe', 'john.doe@example.com', 60000.00, 1, '2023-03-15'),
+    -> ('Jane Smith', 'jane.smith@example.com', 85000.00, 2, '2022-11-01'),
+    -> ('Mike Johnson', 'mike.johnson@example.com', 75000.00, 2, '2024-05-20'),
+    -> ('Emily Davis', 'emily.davis@example.com', 50000.00, 3, '2021-07-10');
+Query OK, 4 rows affected (0.00 sec)
+Records: 4  Duplicates: 0  Warnings: 0

@@ -1,0 +1,142 @@
+
+ENTITIES
+
+
+| Entity           | Primary Key                          | Attributes                        |
+| ---------------- | ------------------------------------ | --------------------------------- |
+|   Student        | `StudentID`                          | Name, Email, Phone                |
+|   Course         | `CourseID`                           | Title, Credits, DepartmentID (FK) |
+|   Department     | `DepartmentID`                       | DeptName                          |
+|   Registration   | Composite Key: (StudentID, CourseID) | RegistrationDate, Grade           |
+
+
+ER DIAGRAM
+
+[Department] <----(offers)----- [Course] -----(registered in)----> [Registration] <----(belongs to)---- [Student]
+
+[Department]
+ - DepartmentID (PK)
+ - DeptName
+
+[Course]
+ - CourseID (PK)
+ - Title
+ - Credits
+ - DepartmentID (FK)
+
+[Student]
+ - StudentID (PK)
+ - Name
+ - Email
+ - Phone
+
+[Registration]
+ - StudentID (PK, FK)
+ - CourseID (PK, FK)
+ - RegistrationDate
+ - Grade
+
+
+NORMALISATION STEPS
+
+1. First Normal Form (1NF)
+Atomic values (no repeating groups)
+
+2. Second Normal Form (2NF)
+No partial dependency on composite key (all non-key attributes depend on whole key)
+
+3. Third Normal Form (3NF)
+No transitive dependencies
+
+All non-key attributes depend only on the key
+
+Our current structure is already in 3NF.
+
+
+mysql> CREATE DATABASE CollegeDB;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> USE CollegeDB;
+Database changed
+mysql>
+mysql> 
+mysql> CREATE TABLE Department (
+    ->     DepartmentID INT PRIMARY KEY,
+    ->     DeptName VARCHAR(100) NOT NULL
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql>
+mysql> 
+mysql> CREATE TABLE Student (
+    ->     StudentID INT PRIMARY KEY,
+    ->     Name VARCHAR(100) NOT NULL,
+    ->     Email VARCHAR(100),
+    ->     Phone VARCHAR(20)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql>
+mysql> 
+mysql> CREATE TABLE Course (
+    ->     CourseID INT PRIMARY KEY,
+    ->     Title VARCHAR(100) NOT NULL,
+    ->     Credits INT NOT NULL,
+    ->     DepartmentID INT,
+    ->     FOREIGN KEY (DepartmentID) REFERENCES Department(DepartmentID)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql>
+mysql> 
+mysql> CREATE TABLE Registration (
+    ->     StudentID INT,
+    ->     CourseID INT,
+    ->     RegistrationDate DATE,
+    ->     Grade CHAR(2),
+    ->     PRIMARY KEY (StudentID, CourseID),
+    ->     FOREIGN KEY (StudentID) REFERENCES Student(StudentID),
+    ->     FOREIGN KEY (CourseID) REFERENCES Course(CourseID)
+    -> );
+Query OK, 0 rows affected 
+
+mysql> INSERT INTO Department VALUES
+    -> (1, 'Computer Science'),
+    -> (2, 'Mathematics');
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Student VALUES
+    -> (1001, 'Alice Smith', 'alice@example.com', '123-456-7890'),
+    -> (1002, 'Bob Johnson', 'bob@example.com', '987-654-3210');
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Course VALUES
+    -> (501, 'Data Structures', 4, 1),
+    -> (502, 'Discrete Math', 3, 2);
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> 
+mysql> INSERT INTO Registration VALUES
+    -> (1001, 501, '2025-07-01', 'A'),
+    -> (1002, 501, '2025-07-02', 'B'),
+    -> (1002, 502, '2025-07-03', NULL);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> SELECT s.StudentID, s.Name AS StudentName, c.Title AS CourseTitle, r.RegistrationDate, r.Grade
+    -> FROM Registration r
+    -> JOIN Student s ON r.StudentID = s.StudentID
+    -> JOIN Course c ON r.CourseID = c.CourseID
+    -> ORDER BY s.StudentID;
++-----------+-------------+-----------------+------------------+-------+
+| StudentID | StudentName | CourseTitle     | RegistrationDate | Grade |
++-----------+-------------+-----------------+------------------+-------+
+|      1001 | Alice Smith | Data Structures | 2025-07-01       | A     |
+|      1002 | Bob Johnson | Data Structures | 2025-07-02       | B     |
+|      1002 | Bob Johnson | Discrete Math   | 2025-07-03       | NULL  |
++-----------+-------------+-----------------+------------------+-------+
+3 rows in set

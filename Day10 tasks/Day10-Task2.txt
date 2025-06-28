@@ -1,0 +1,28 @@
+mysql> CREATE TABLE Courses (
+    ->     CourseID INT AUTO_INCREMENT PRIMARY KEY,
+    ->     CourseName VARCHAR(100),
+    ->     Fees DECIMAL(10, 2)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO Courses (CourseName, Fees) VALUES
+    -> ('Data Science', 1500.00),
+    -> ('Web Development', 1200.00),
+    -> ('Graphic Design', 1000.00),
+    -> ('Cybersecurity', 1800.00),
+    -> ('Digital Marketing', 1100.00);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Courses
+    -> ORDER BY Fees ASC;
++----------+-------------------+---------+
+| CourseID | CourseName        | Fees    |
++----------+-------------------+---------+
+|        3 | Graphic Design    | 1000.00 |
+|        5 | Digital Marketing | 1100.00 |
+|        2 | Web Development   | 1200.00 |
+|        1 | Data Science      | 1500.00 |
+|        4 | Cybersecurity     | 1800.00 |
++----------+-------------------+---------+
+5 rows in set 

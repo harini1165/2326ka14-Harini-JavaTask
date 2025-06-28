@@ -1,0 +1,158 @@
+ENTITIES:
+
+
+| Entity     | Primary Key                                       | Attributes                     |
+| ---------- | ------------------------------------------------- | ------------------------------ |
+|   Book     | `BookID`                                          | Title, Author, Publisher, ISBN |
+|   Member   | `MemberID`                                        | Name, Email, Phone             |
+|   Loan     | Composite Key: `LoanID` or (`BookID`, `MemberID`) | IssueDate, DueDate, ReturnDate |
+|   Staff    | `StaffID`                                         | Name, Role, Email              |
+
+
+
+ER DIAGRAM:
+
+[Book] <----- (loaned in) ---- [Loan] -----> [Member]
+                             |
+                             |
+                         (issued by)
+                             |
+                          [Staff]
+
+Entities:
+
+
+[Book]
+ - BookID (PK)
+ - Title
+ - Author
+ - Publisher
+ - ISBN
+
+[Member]
+ - MemberID (PK)
+ - Name
+ - Email
+ - Phone
+
+[Staff]
+ - StaffID (PK)
+ - Name
+ - Role
+ - Email
+
+[Loan]
+ - LoanID (PK)
+ - BookID (FK)
+ - MemberID (FK)
+ - StaffID (FK)
+ - IssueDate
+ - DueDate
+ - ReturnDate
+
+
+NORMALISATION STEPS:
+
+1.1NF
+All attributes are atomic
+
+No multivalued fields or repeating groups
+
+2: 2NF
+All non-key attributes fully functionally dependent on the primary key
+
+3: 3NF
+No transitive dependencies
+
+All non-key attributes depend only on the primary key
+
+→ The schema is now in 3NF
+
+
+
+mysql> CREATE DATABASE LibraryDB;
+Query OK, 1 row affected, 1 warning (0.00 sec)
+
+mysql> USE LibraryDB;
+Database changed
+mysql>
+mysql> CREATE TABLE Book (
+    ->     BookID INT PRIMARY KEY,
+    ->     Title VARCHAR(150) NOT NULL,
+    ->     Author VARCHAR(100),
+    ->     Publisher VARCHAR(100),
+    ->     ISBN VARCHAR(20) UNIQUE
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> CREATE TABLE Member (
+    ->     MemberID INT PRIMARY KEY,
+    ->     Name VARCHAR(100) NOT NULL,
+    ->     Email VARCHAR(100),
+    ->     Phone VARCHAR(15)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> CREATE TABLE Staff (
+    ->     StaffID INT PRIMARY KEY,
+    ->     Name VARCHAR(100) NOT NULL,
+    ->     Role VARCHAR(50),
+    ->     Email VARCHAR(100)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql>
+mysql> CREATE TABLE Loan (
+    ->     LoanID INT PRIMARY KEY,
+    ->     BookID INT,
+    ->     MemberID INT,
+    ->     StaffID INT,
+    ->     IssueDate DATE,
+    ->     DueDate DATE,
+    ->     ReturnDate DATE,
+    ->     FOREIGN KEY (BookID) REFERENCES Book(BookID),
+    ->     FOREIGN KEY (MemberID) REFERENCES Member(MemberID),
+    ->     FOREIGN KEY (StaffID) REFERENCES Staff(StaffID)
+    -> );
+Query OK, 0 rows affected 
+
+
+mysql> INSERT INTO Book VALUES
+    -> (1, 'The Alchemist', 'Paulo Coelho', 'HarperCollins', '9780061122415'),
+    -> (2, 'Clean Code', 'Robert C. Martin', 'Prentice Hall', '9780132350884');
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> INSERT INTO Member VALUES
+    -> (101, 'Alice Smith', 'alice@example.com', '1234567890'),
+    -> (102, 'Bob Johnson', 'bob@example.com', '0987654321');
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> INSERT INTO Staff VALUES
+    -> (201, 'Librarian Jane', 'Librarian', 'jane@library.com'),
+    -> (202, 'Assistant John', 'Assistant', 'john@library.com');
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Loan VALUES
+    -> (1001, 1, 101, 201, '2025-06-01', '2025-06-15', NULL),
+    -> (1002, 2, 102, 202, '2025-06-05', '2025-06-20', '2025-06-18');
+Query OK, 2 rows affected
+
+
+mysql> SELECT l.LoanID, b.Title, m.Name AS MemberName, s.Name AS StaffName,
+    ->        l.IssueDate, l.DueDate, l.ReturnDate
+    -> FROM Loan l
+    -> JOIN Book b ON l.BookID = b.BookID
+    -> JOIN Member m ON l.MemberID = m.MemberID
+    -> JOIN Staff s ON l.StaffID = s.StaffID;
++--------+---------------+-------------+----------------+------------+------------+------------+
+| LoanID | Title         | MemberName  | StaffName      | IssueDate  | DueDate    | ReturnDate |
++--------+---------------+-------------+----------------+------------+------------+------------+
+|   1001 | The Alchemist | Alice Smith | Librarian Jane | 2025-06-01 | 2025-06-15 | NULL       |
+|   1002 | Clean Code    | Bob Johnson | Assistant John | 2025-06-05 | 2025-06-20 | 2025-06-18 |
++--------+---------------+-------------+----------------+------------+------------+------------+
+2 rows in set

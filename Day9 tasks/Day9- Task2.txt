@@ -1,0 +1,73 @@
+Based on the ER diagram, we derive the following relations:
+
+1. Book(BookID, Title, ISBN, Price, PublicationYear, Genre, StockQuantity, PublisherID)
+FDs:
+
+BookID → Title, ISBN, Price, PublicationYear, Genre, StockQuantity, PublisherID
+
+ISBN → BookID, Title (if ISBN is unique per book)
+
+2. Author(AuthorID, Name, Bio, Email)
+FDs:
+
+AuthorID → Name, Bio, Email
+
+3. Publisher(PublisherID, Name, Address, ContactEmail, Website)
+FDs:
+
+PublisherID → Name, Address, ContactEmail, Website
+
+4. BookAuthor(BookID, AuthorID, Role)
+FDs:
+
+(BookID, AuthorID) → Role
+
+Normalisation to 3NF:
+✅ All attributes must be in:
+1NF: Atomic values (already true)
+
+2NF: No partial dependencies (true if every non-prime attribute is fully dependent on the whole key)
+
+3NF: No transitive dependencies (non-prime attributes depend only on keys)
+
+ Relation: Book
+Initial:
+Book(BookID, Title, ISBN, Price, PublicationYear, Genre, StockQuantity, PublisherID)
+FD: BookID → all other attributes
+
+This is in 3NF if:
+
+BookID is the primary key
+
+All other attributes are dependent only on BookID
+
+🟡 If we assume ISBN is also a candidate key (i.e., unique per book), we might need to separate it to avoid redundancy.
+
+But if BookID is the system's primary key, then the relation is already in 3NF.
+
+✅ No transitive dependencies — Already in 3NF.
+
+ Relation: Author
+Author(AuthorID, Name, Bio, Email)
+FD: AuthorID → Name, Bio, Email
+✅ Already in 3NF.
+
+ Relation: Publisher
+Publisher(PublisherID, Name, Address, ContactEmail, Website)
+FD: PublisherID → Name, Address, ContactEmail, Website
+✅ Already in 3NF.
+
+ Relation: BookAuthor
+BookAuthor(BookID, AuthorID, Role)
+FD: (BookID, AuthorID) → Role
+✅ Composite key (BookID, AuthorID), fully determines Role
+✅ Already in 3NF.
+
+✅ Final 3NF Relations
+Book(BookID, Title, ISBN, Price, PublicationYear, Genre, StockQuantity, PublisherID)
+
+Author(AuthorID, Name, Bio, Email)
+
+Publisher(PublisherID, Name, Address, ContactEmail, Website)
+
+BookAuthor(BookID, AuthorID, Role)

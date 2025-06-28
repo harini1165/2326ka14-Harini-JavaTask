@@ -1,0 +1,19 @@
+mysql> INSERT INTO Student (name, age, email) VALUES
+    -> ('Harini', 20, 'harini@example.com'),
+    -> ('Harish', 22, 'harish@example.com'),
+    -> ('Charu', 19, 'charu@example.com'),
+    -> ('Dia', 21, 'dia@example.com'),
+    -> ('jai', 23, 'jai@example.com');
+Query OK, 5 rows affected 
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql>
+mysql> INSERT INTO Course (course_name, description) VALUES
+    -> ('Mathematics', 'Basic and advanced math concepts'),
+    -> ('Physics', 'Fundamentals of mechanics and thermodynamics'),
+    -> ('Computer Science', 'Intro to programming and data structures'),
+    -> ('English Literature', 'Study of classic and modern literature'),
+    -> ('History', 'World history from ancient to modern times');
+Query OK, 5 rows affected 
+Records: 5  Duplicates: 0  Warnings: 0

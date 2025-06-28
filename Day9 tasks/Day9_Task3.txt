@@ -1,0 +1,100 @@
+mysql> CREATE DATABASE  inventory_db;
+Query OK, 1 row affected (0.03 sec)
+
+mysql> USE inventory_db;
+Database changed
+mysql>
+mysql> -- Customers table
+mysql> CREATE TABLE Customers (
+    ->     CustomerID INT PRIMARY KEY,
+    ->     CustomerName VARCHAR(100) NOT NULL
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql>
+mysql> -- Products table
+mysql> CREATE TABLE Products (
+    ->     ProductID INT PRIMARY KEY,
+    ->     ProductName VARCHAR(100) NOT NULL,
+    ->     Price DECIMAL(10, 2) NOT NULL
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql>
+mysql> -- Orders table
+mysql> CREATE TABLE Orders (
+    ->     OrderID INT PRIMARY KEY,
+    ->     CustomerID INT,
+    ->     OrderDate DATE,
+    ->     FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql>
+mysql> -- OrderDetails table
+mysql> CREATE TABLE OrderDetails (
+    ->     OrderID INT,
+    ->     ProductID INT,
+    ->     Quantity INT,
+    ->     PRIMARY KEY (OrderID, ProductID),
+    ->     FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
+    ->     FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> -- Insert customers
+mysql> INSERT INTO Customers VALUES
+    -> (1, 'Alice'),
+    -> (2, 'Bob');
+Query OK, 2 rows affected (0.03 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> -- Insert products
+mysql> INSERT INTO Products VALUES
+    -> (101, 'Laptop', 1200.00),
+    -> (102, 'Mouse', 25.50),
+    -> (103, 'Keyboard', 45.00);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> -- Insert orders
+mysql> INSERT INTO Orders VALUES
+    -> (1001, 1, '2025-06-01'),
+    -> (1002, 2, '2025-06-02');
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> -- Insert order details
+mysql> INSERT INTO OrderDetails VALUES
+    -> (1001, 101, 1),  -- Alice bought 1 Laptop
+    -> (1001, 102, 2),  -- Alice bought 2 Mice
+    -> (1002, 103, 1);  -- Bob bought 1 Keyboard
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> SELECT
+    ->     o.OrderID,
+    ->     c.CustomerName,
+    ->     o.OrderDate,
+    ->     p.ProductName,
+    ->     od.Quantity,
+    ->     p.Price,
+    ->     (od.Quantity * p.Price) AS TotalPrice
+    -> FROM Orders o
+    -> JOIN Customers c ON o.CustomerID = c.CustomerID
+    -> JOIN OrderDetails od ON o.OrderID = od.OrderID
+    -> JOIN Products p ON od.ProductID = p.ProductID
+    -> ORDER BY o.OrderID;
++---------+--------------+------------+-------------+----------+---------+------------+
+| OrderID | CustomerName | OrderDate  | ProductName | Quantity | Price   | TotalPrice |
++---------+--------------+------------+-------------+----------+---------+------------+
+|    1001 | Alice        | 2025-06-01 | Laptop      |        1 | 1200.00 |    1200.00 |
+|    1001 | Alice        | 2025-06-01 | Mouse       |        2 |   25.50 |      51.00 |
+|    1002 | Bob          | 2025-06-02 | Keyboard    |        1 |   45.00 |      45.00 |
++---------+--------------+------------+-------------+----------+---------+------------+
+3 rows in set (0.00 sec)
+
+mysql>
